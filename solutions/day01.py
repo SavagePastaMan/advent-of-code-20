@@ -1,10 +1,19 @@
 from typing import List
+import helper
+
+raw = helper.day(1)
+
+
 def parse(data: str) -> List[int]:
     L = [int(x) for x in data.split("\n")]
     return L
 
 
-def part_one(data: List[int]) -> int:
+data = parse(raw)
+
+
+@helper.timer
+def part_one() -> int:
     s = set()
     for x in data:
         if x not in s:
@@ -12,8 +21,8 @@ def part_one(data: List[int]) -> int:
         if 2020 - x in s:
             return (2020 - x) * x
 
-
-def part_two(data: List[int]) -> int:
+@helper.timer
+def part_two() -> int:
     for x in data:
         diff = 2020 - x
         s = set()
@@ -24,11 +33,5 @@ def part_two(data: List[int]) -> int:
                 return (diff - y) * y * x
 
 
-if __name__ == '__main__':
-    with open('input.txt') as f:
-        problem_input = f.read()
-
-    data = parse(problem_input)
-
-    # print(part_one(data))
-    print(part_two(data))
+print(part_one())
+print(part_two())
