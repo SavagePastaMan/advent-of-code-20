@@ -10,16 +10,18 @@ data = helper.day({day})
 
 
 def parse(raw):
-    pass
+    ...
+
 
 data = parse(data)
 
+
 def part_one():
-    pass
+    ...
 
 
 def part_two():
-    pass
+    ...
 
 
 print(part_one())

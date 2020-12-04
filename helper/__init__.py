@@ -3,8 +3,11 @@ import bs4
 from pathlib import Path
 import os
 import requests
+import typing as t
 import dotenv
 import time
+import re
+import numpy as np
 
 dotenv.load_dotenv()
 
@@ -16,12 +19,7 @@ SUBMISSIONS_FILE = "submissions.json"
 URL = f"https://adventofcode.com/{YEAR}/day/{{day}}"
 
 
-def timer(func):
-    def inner(*args, **kwargs):
-        s = time.perf_counter()
-        func(*args, **kwargs)
-        return time.perf_counter() - s
-    return inner
+
 
 
 def day(d: int) -> str:
@@ -58,8 +56,7 @@ def submit(day: int, func):
         print(f"Day {day} part {part} already solved. Solution: {submissions[day][part]['solution']}")
         return
 
-    solution = str(func())
-    if solution is None:
+    if solution := str(func()) is None:
         return
 
     if solution in submissions[day][part]:
@@ -85,3 +82,22 @@ def submit(day: int, func):
     with open(THIS_DIR / SUBMISSIONS_FILE, "w") as f:
         json.dump(submissions, f)
 
+def timer(func):
+    def inner(*args, **kwargs):
+        L = np.empty(100, dtype=np.float64)
+        for i in range(100):
+            s = time.perf_counter()
+            func(*args, **kwargs)
+            L[i] = time.perf_counter() - s
+        return L.mean()
+    return inner
+
+def prod(L):
+    p = 1
+    for x in L:
+        p *= x
+    return p
+
+
+def extract_ints(s: str) -> t.List[int]:
+    return [int(x) for x in re.findall(r'(\d+)', s)]
