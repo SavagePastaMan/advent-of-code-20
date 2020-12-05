@@ -31,7 +31,7 @@ helper.submit({day}, part_one)
 helper.submit({day}, part_two)
 """
 
-for i in range(1, 5):
+for i in range(1, 11):
     file = FILE_DIR / "solutions" / f"day{i:02}.py"
     if file.exists():
         continue

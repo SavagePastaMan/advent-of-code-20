@@ -1,7 +1,7 @@
 import helper
 
-data = helper.day(3)
-
+# data = helper.day(3)
+data = ""
 
 # print(data)
 
