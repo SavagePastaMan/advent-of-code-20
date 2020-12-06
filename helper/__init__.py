@@ -56,8 +56,11 @@ def submit(day: int, func):
         print(f"Day {day} part {part} already solved. Solution: {submissions[day][part]['solution']}")
         return
 
-    if solution := str(func()) is None:
+    if (solution := str(func())) is None:
         return
+
+    print(solution)
+    return
 
     if solution in submissions[day][part]:
         print(f"Solution {solution} to part {part} has already been submitted")
@@ -76,6 +79,9 @@ def submit(day: int, func):
 
     if message.startswith("That's the"):
         print("correct answer")
+
+    if message.startswith("That's not"):
+        print("wrong answers")
 
     submissions[day][part][solution] = message
 
