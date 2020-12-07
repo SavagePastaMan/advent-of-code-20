@@ -1,12 +1,10 @@
 import helper
 
 data = helper.day(6)
-# print(data)
 
 
 def parse(raw):
-    L = data.split("\n\n")
-    return L
+    return raw.split("\n\n")
 
 
 data = parse(data)
@@ -19,9 +17,6 @@ def part_one():
 def part_two():
     return sum(len(set.intersection(*[set(n) for n in x.split("\n")])) for x in data)
 
-
-# print(part_one())
-# print(part_two())
 
 helper.submit(6, part_one)
 helper.submit(6, part_two)

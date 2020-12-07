@@ -5,14 +5,12 @@ raw = helper.day(1)
 
 
 def parse(data: str) -> List[int]:
-    L = [int(x) for x in data.split("\n")]
-    return L
+    return [int(x) for x in data.split("\n")]
 
 
 data = parse(raw)
 
 
-@helper.timer
 def part_one() -> int:
     s = set()
     for x in data:
@@ -21,7 +19,7 @@ def part_one() -> int:
         if 2020 - x in s:
             return (2020 - x) * x
 
-@helper.timer
+
 def part_two() -> int:
     for x in data:
         diff = 2020 - x

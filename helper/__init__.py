@@ -19,9 +19,6 @@ SUBMISSIONS_FILE = "submissions.json"
 URL = f"https://adventofcode.com/{YEAR}/day/{{day}}"
 
 
-
-
-
 def day(d: int) -> str:
     d = str(d)
 
@@ -56,11 +53,10 @@ def submit(day: int, func):
         print(f"Day {day} part {part} already solved. Solution: {submissions[day][part]['solution']}")
         return
 
-    if (solution := str(func())) is None:
+    if (solution := func()) is None:
         return
 
-    print(solution)
-    return
+    solution = str(solution)
 
     if solution in submissions[day][part]:
         print(f"Solution {solution} to part {part} has already been submitted")
@@ -88,6 +84,7 @@ def submit(day: int, func):
     with open(THIS_DIR / SUBMISSIONS_FILE, "w") as f:
         json.dump(submissions, f)
 
+
 def timer(func):
     def inner(*args, **kwargs):
         L = np.empty(100, dtype=np.float64)
@@ -96,7 +93,9 @@ def timer(func):
             func(*args, **kwargs)
             L[i] = time.perf_counter() - s
         return L.mean()
+
     return inner
+
 
 def prod(L):
     p = 1
