@@ -57,6 +57,7 @@ def submit(day: int, func):
         return
 
     solution = str(solution)
+    print(solution)
 
     if solution in submissions[day][part]:
         print(f"Solution {solution} to part {part} has already been submitted")
