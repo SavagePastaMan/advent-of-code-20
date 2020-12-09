@@ -11,49 +11,42 @@ def parse(raw):
 data = parse(data)
 
 
-def find_sum(q, n):
-    s = set()
-    for x in q:
-        if x not in s:
-            s.add(x)
-        if n - x in s:
-            return True
-    else:
-        return False
-
-
 def part_one():
     q = deque(maxlen=25)
+    s = set()
     for x in data:
         if len(q) < 25:
             q.append(x)
+            s.add(x)
         else:
-            if not find_sum(q, x):
+            for e in q:
+                if x - e in s:
+                    break
+            else:
                 return x
+            s.remove(q[0])
             q.append(x)
+            s.add(x)
 
 
 def part_two():
     N = 217430975
 
-    i = 0
-    while i < len(data):
-        s = data[i]
+    d = deque()
+    s = 0
 
-        j = i + 1
-        while j < len(data):
-            if s == N:
-                return min(data[i: j]) + max(data[i: j])
+    for x in data:
+        s += x
+        d.append(x)
 
-            if s > N or j == len(data) - 1:
-                break
-            s += data[j]
-            j += 1
-        i += 1
+        while s > N:
+            s -= d.popleft()
+
+        if s == N:
+            return min(d) + max(d)
 
 
-print(part_one())
-print(part_two())
+if __name__ == "__main__":
+    print(part_one())
+    print(part_two())
 
-# helper.submit(9, part_one)
-# helper.submit(9, part_two)

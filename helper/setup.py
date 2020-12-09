@@ -24,11 +24,10 @@ def part_two():
     ...
 
 
-print(part_one())
-print(part_two())
+if __name__ == '__main__':
+    print(part_one())
+    print(part_two())
 
-helper.submit({day}, part_one)
-helper.submit({day}, part_two)
 """
 
 for i in range(1, 11):

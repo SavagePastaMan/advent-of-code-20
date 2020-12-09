@@ -5,9 +5,7 @@ import os
 import requests
 import typing as t
 import dotenv
-import time
 import re
-import numpy as np
 
 dotenv.load_dotenv()
 
@@ -84,18 +82,6 @@ def submit(day: int, func):
 
     with open(THIS_DIR / SUBMISSIONS_FILE, "w") as f:
         json.dump(submissions, f)
-
-
-def timer(func):
-    def inner(*args, **kwargs):
-        L = np.empty(100, dtype=np.float64)
-        for i in range(100):
-            s = time.perf_counter()
-            func(*args, **kwargs)
-            L[i] = time.perf_counter() - s
-        return L.mean()
-
-    return inner
 
 
 def prod(L):

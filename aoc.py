@@ -2,6 +2,9 @@
 
 import argparse
 import time
+import importlib
+import helper
+from decimal import Decimal
 
 
 def get_day(d: str) -> int:
@@ -12,6 +15,22 @@ def get_day(d: str) -> int:
     raise ValueError("Invalid day")
 
 
+def timer(func):
+    s = 0
+    for _ in range(100):
+        start = time.perf_counter()
+        func()
+        s += time.perf_counter() - start
+
+    mean = s / 100
+
+    units = ["s", "ms", "us", "ns"]
+    i = 0
+    while mean < 1/(10 ** (i * 3)):
+        i += 1
+    return f"{mean * (10**(i*3))}{units[i]}"
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("day", help="day to operate on")
@@ -20,4 +39,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     d = get_day(args.day)
+    solution = importlib.import_module(f"solutions.day{d:02}")
 
+    if args.submit:
+        helper.submit(d, solution.part_one)
+        helper.submit(d, solution.part_two)
+
+    if args.timer:
+        print(timer(solution.part_one))
+        print(timer(solution.part_two))
+    else:
+        print(solution.part_one())
+        print(solution.part_two())
