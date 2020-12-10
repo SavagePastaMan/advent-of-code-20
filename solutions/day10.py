@@ -26,32 +26,17 @@ def part_one():
     return o * t
 
 
-sdata = sorted([0] + data + [max(data) + 3])
-s = set(sdata)
-
-dp = defaultdict(int)
-dp[0] = 1
-
-
-def dfs(n):
-    if n == sdata[-1]:
-        return dp[n - 1] + dp[n - 2] + dp[n - 3]
-
-    if n - 1 in s:
-        dp[n] += dp[n - 1]
-    if n - 2 in s:
-        dp[n] += dp[n - 2]
-    if n - 3 in s:
-        dp[n] += dp[n - 3]
-
-    for i in range(1, 4):
-        if n + i in s:
-            if r := dfs(n + i):
-                return r
-
-
 def part_two():
-    return dfs(0)
+    t = max(data) + 3
+    sdata = sorted([0] + data + [t])
+    dp = defaultdict(int)
+    dp[0] = 1
+
+    for x in sdata:
+        for dx in (1, 2, 3):
+            dp[x] += dp[x - dx]
+
+    return dp[t]
 
 
 if __name__ == "__main__":
