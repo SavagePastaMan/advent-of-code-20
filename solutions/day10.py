@@ -16,14 +16,12 @@ data = parse(data)
 def part_one():
     final = max(data) + 3
     L = [0] + sorted(data) + [final]
-    o, t = 0, 0
-    for a, b in zip(L, L[1:]):
-        if b - a == 1:
-            o += 1
-        elif b - a == 3:
-            t += 1
+    d = defaultdict(int)
 
-    return o * t
+    for a, b in zip(L, L[1:]):
+        d[b - a] += 1
+
+    return d[1] * d[3]
 
 
 def part_two():
@@ -40,5 +38,5 @@ def part_two():
 
 
 if __name__ == "__main__":
-    # print(part_one())
+    print(part_one())
     print(part_two())
