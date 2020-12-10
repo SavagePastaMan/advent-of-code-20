@@ -1,40 +1,37 @@
 from collections import defaultdict
+from functools import lru_cache
 import helper
 
 data = helper.day(10)
 
 
-# print(data)
-
 def parse(raw):
-    return [int(x) for x in raw.split("\n")]
+    t = [int(x) for x in raw.split("\n")]
+    t += [0, max(t) + 3]
+    return sorted(t)
 
 
 data = parse(data)
 
 
 def part_one():
-    final = max(data) + 3
-    L = [0] + sorted(data) + [final]
     d = defaultdict(int)
 
-    for a, b in zip(L, L[1:]):
+    for a, b in zip(data, data[1:]):
         d[b - a] += 1
 
     return d[1] * d[3]
 
 
+@lru_cache(maxsize=3)
+def dfs(x):
+    if x == len(data) - 1:
+        return 1
+    return sum(dfs(x + dx) for dx in range(1, min(4, len(data) - x)) if data[x + dx] - data[x] <= 3)
+
+
 def part_two():
-    t = max(data) + 3
-    sdata = sorted([0] + data + [t])
-    dp = defaultdict(int)
-    dp[0] = 1
-
-    for x in sdata:
-        for dx in (1, 2, 3):
-            dp[x] += dp[x - dx]
-
-    return dp[t]
+    return dfs(0)
 
 
 if __name__ == "__main__":
