@@ -4,7 +4,6 @@ import argparse
 import time
 import importlib
 import helper
-from decimal import Decimal
 
 
 def get_day(d: str) -> int:
