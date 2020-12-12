@@ -27,10 +27,9 @@ def part_two():
 if __name__ == '__main__':
     print(part_one())
     print(part_two())
-
 """
 
-for i in range(1, 11):
+for i in range(1, 15):
     file = FILE_DIR / "solutions" / f"day{i:02}.py"
     if file.exists():
         continue

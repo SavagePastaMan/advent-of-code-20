@@ -76,7 +76,11 @@ def submit(day: int, func):
         print("correct answer")
 
     if message.startswith("That's not"):
-        print("wrong answers")
+        print("wrong answer", end="")
+        if "too low" in message:
+            print(": too low")
+        elif "too high" in message:
+            print(": too high")
 
     submissions[day][part][solution] = message
 
