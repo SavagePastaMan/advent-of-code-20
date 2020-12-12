@@ -1,84 +1,63 @@
 import helper
 
 data = helper.day(12)
-# data = "F10\nN3\nF7\nR90\nF11"
 
-
-# print(data)
 
 def parse(raw):
-    L = []
-    for x in raw.split("\n"):
-        L.append((x[0], int(x[1:])))
-    return L
+    trans = {"N": 0, "E": 1, "S": 2, "W": 3}
+    return [(trans.get(x[0], x[0]), int(x[1:])) for x in raw.splitlines()]
 
 
 data = parse(data)
 
+change = {
+    0: lambda n: (0, n),
+    1: lambda n: (n, 0),
+    2: lambda n: (0, -n),
+    3: lambda n: (-n, 0),
+}
+
 
 def part_one():
     f = 1
-    X = 0
-    Y = 0
+    x = 0
+    y = 0
+
     for d, n in data:
         if d == "F":
-            if f == 0:
-                Y += n
-            elif f == 1:
-                X += n
-            elif f == 2:
-                Y -= n
-            elif f == 3:
-                X -= n
+            dx, dy = change[f](n)
+            x, y = x + dx, y + dy
         elif d == "R":
-            f += n / 90
-            f %= 4
+            f = (f + n // 90) % 4
         elif d == "L":
-            f -= n / 90
-            f %= 4
-        elif d == "N":
-            Y += n
-        elif d == "E":
-            X += n
-        elif d == "S":
-            Y -= n
-        elif d == "W":
-            X -= n
+            f = (f - n // 90) % 4
+        else:
+            dx, dy = change[d](n)
+            x, y = x + dx, y + dy
 
-    return abs(X) + abs(Y)
+    return abs(x) + abs(y)
 
 
 def part_two():
-    X, Y = 10, 1
-
+    wx, wy = 10, 1
     sx, sy = 0, 0
 
-    for d, n in data:
-        if d == "N":
-            Y += n
-        elif d == "S":
-            Y -= n
-        elif d == "E":
-            X += n
-        elif d == "W":
-            X -= n
-        elif d == "R":
-            if n == 180:
-                X, Y = -X, -Y
-            if n == 90:
-                X, Y = Y, -X
-            elif n == 270:
-                X, Y = -Y, X
-        elif d == "L":
-            if n == 180:
-                X, Y = -X, -Y
-            elif n == 90:
-                X, Y = -Y, X
-            elif n == 270:
-                X, Y = Y, -X
+    rotation = {
+        **dict.fromkeys([("L", 90), ("R", 270)], lambda x, y: (-y, x)),
+        **dict.fromkeys([("L", 180), ("R", 180)], lambda x, y: (-x, -y)),
+        **dict.fromkeys([("L", 270), ("R", 90)], lambda x, y: (y, -x)),
+    }
+
+    for inst in data:
+        d, n = inst
+        if t := change.get(d):
+            dx, dy = t(n)
+            wx, wy = wx + dx, wy + dy
         elif d == "F":
-            sx += X * n
-            sy += Y * n
+            sx += wx * n
+            sy += wy * n
+        else:
+            wx, wy = rotation[inst](wx, wy)
 
     return abs(sx) + abs(sy)
 
